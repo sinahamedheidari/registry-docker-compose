@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  minio:
+    image: quay.io/minio/minio
+    volumes:
+      - ./volumes/minio:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ":9001"
+
+  registry:
+    image: registry:2
+    volumes:
+      - ./files/config-auth.yml:/etc/docker/registry/config.yml:ro
+      - ./files/passwd:/auth/passwd:ro
+    ports:
+      - 5000:5000
+    environment:
+      - REGISTRY_STORAGE_REDIRECT_DISABLE=true
+
+

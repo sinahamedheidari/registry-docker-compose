@@ -1,0 +1,32 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  redirect:
+    disable: false
+  cache:
+     layerinfo: inmemory
+  s3:
+     accesskey: minioadmin 
+     secretkey: minioadmin
+     region: us-east-1
+     regionendpoint: http://minio:9000
+     bucket: docker-registry
+     encrypt: false
+     secure: false
+     v4auth: false
+     chunksize: 5242880
+     rootdirectory: /  
+  delete:
+     enabled: true
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /auth/passwd
+
+
