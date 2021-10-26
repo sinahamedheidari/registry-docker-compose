@@ -10,7 +10,7 @@ sudo apt install apache2-utils -y
 
 Create a new user:
 ```
-htpasswd -u admin
+htpasswd -B -n admin
 ```
 
 Then insert the new encrypted password in the file
