@@ -1,0 +1,38 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  redirect:
+     disable: false
+  cache:
+     blobdescriptor: inmemory
+  s3:
+     accesskey: MINIO_ACCESS_KEY 
+     secretkey: MINIO_SECRET_KEY
+     region: us-east-1
+     regionendpoint: MINIO_REGION_ENDPOINT
+     bucket: MINIO_BUCKET
+     encrypt: false
+     secure: false
+     v4auth: false
+     chunksize: 5242880
+     rootdirectory: /  
+  delete:
+     enabled: true
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+proxy:
+  remoteurl: https://registry-1.docker.io
+  username: DOCKER_PROXY_USERNAME
+  password: DOCKER_PROXY_PASSWORD
+compatibility:
+  schema1:
+    enabled: true
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /auth/passwd
+

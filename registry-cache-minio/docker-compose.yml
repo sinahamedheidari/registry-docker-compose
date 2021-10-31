@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  minio:
+    image: quay.io/minio/minio
+    volumes:
+      - ./volumes/minio:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ":9001"
+
+  cache:
+    build:
+       context: ./cache
+       args:
+         - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+         - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+         - MINIO_BUCKET=${MINIO_BUCKET}
+         - MINIO_REGION_ENDPOINT=${MINIO_REGION_ENDPOINT}
+         - DOCKER_PROXY_USERNAME=${DOCKER_PROXY_USERNAME}
+         - DOCKER_PROXY_PASSWORD=${DOCKER_PROXY_PASSWORD}
+    image: registry-minio-cache:latest
+    volumes:
+         - ./files/passwd:/auth/passwd:ro
+    ports:
+      - 5001:5000
+    environment:
+      - REGISTRY_STORAGE_REDIRECT_DISABLE=true
+
+  registry:
+    build:
+       context: ./registry
+       args:
+         - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+         - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+         - MINIO_BUCKET=${MINIO_BUCKET}
+         - MINIO_REGION_ENDPOINT=${MINIO_REGION_ENDPOINT}
+    image: registry-minio:latest
+    volumes:
+         - ./files/passwd:/auth/passwd:ro
+    ports:
+      - 5000:5000
+    environment:
+      - REGISTRY_STORAGE_REDIRECT_DISABLE=true
+
+
+
+
