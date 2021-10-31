@@ -30,3 +30,4 @@ minio:
      MINIO_ROOT_USER=master-user
      MINIO_ROOT_PASSWORD=master-password
 ```
+After Minio is up successfully, remember to create a bucket with Minio UI on port 9001 or using [Minio Client](https://docs.min.io/docs/minio-client-quickstart-guide.html).
